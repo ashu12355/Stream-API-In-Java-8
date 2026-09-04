@@ -32,8 +32,8 @@ public class Question {
 
         Integer maxNum = maxlist
                 .stream()
-                //.max((a,b)-> a > b ? 1: -1)  ->1st Way
-                .max((a, b) -> a.compareTo(b))
+                .max((a,b)-> a > b ? 1: -1)  //->1st Way
+//                .max((a, b) -> a.compareTo(b))
                 .get();
         System.out.println(maxNum);
     }
@@ -60,7 +60,6 @@ public class Question {
                 .stream()
                 .filter(a -> a.startsWith("A") || a.startsWith("a"))
                 .collect(Collectors.toList());
-
         System.out.println(results);
 
     }
@@ -99,7 +98,7 @@ public class Question {
         List<Integer> flatList = listOfList
                 .stream()
                 .flatMap(a -> a.stream())
-                .sorted()
+//                .sorted()
                 .collect(Collectors.toList());
 
         System.out.println(flatList);
@@ -113,6 +112,7 @@ public class Question {
         Map<Boolean, List<Integer>> result = list
                 .stream()
                 .collect(Collectors.partitioningBy(x -> x % 2 == 0));
+
         System.out.println("Even :" + result.get(true));
         System.out.println("Odd :" + result.get(false));
     }
@@ -189,8 +189,8 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 
         Integer res = list
                 .stream()
-                .mapToInt(a -> a) //Integer object को primitive int में बदलता है  इससे हमें numeric operations मिलते हैं जैसे sum(), average() |
-                // a -> a का मतलब: value को जैसा है वैसा ही pass करना
+                .mapToInt(a -> a) //Integer object को primitive int में बदलता है  इससे हमें numeric operations मिलते हैं
+                // जैसे sum(), average() a -> a का मतलब: value को जैसा है वैसा ही pass करना
                 .sum();
 
         System.out.println(res);
@@ -237,7 +237,9 @@ Q. How to create a frequency map from a list of strings using Java Streams?
         Optional<Integer> result = list
                 .stream()
                 .distinct()
-                .sorted((a, b) -> b.compareTo(a)).skip(1).findFirst();
+                .sorted((a, b) -> b.compareTo(a))
+                .skip(1)
+                .findFirst();
         result.ifPresent(System.out::println);
     }
 
@@ -473,7 +475,7 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 //        removeNullValuesFromList();
 //        flatListOfList();
 //        partitionOddEven();
-        freqOfElement();
+//        freqOfElement();
 //        mergeTwoList();
 //        convertListOfIntegersToTheirSquare();
 //        removeDuplicateWords();
@@ -482,7 +484,7 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 //        findElementsGreaterThan10();
 //        findLongestString();
 //        findLongestStringAndLength();
-//        findTheSecondHighestElement();
+        findTheSecondHighestElement();
 //        collectOddNumber();
 //        PositiveList();
 //        isNegativeList();
@@ -505,7 +507,7 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 //        palindromicListCount();
 //        reverseList();
 //        countCharacterInAList();
-        firstNonRepeatingCharcter();
+//        firstNonRepeatingCharcter();
 
     }
 }
