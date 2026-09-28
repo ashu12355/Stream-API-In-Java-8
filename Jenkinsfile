@@ -1,17 +1,51 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     stages {
+
+        stage('Check Git') {
+            steps {
+                sh '''
+                    echo "=== Jenkins Environment ==="
+                    whoami
+
+                    echo "=== Git Location ==="
+                    which git
+
+                    echo "=== Git Version ==="
+                    git --version
+
+                    echo "=== Git HTTP Version ==="
+                    git config --global --get http.version || true
+                '''
+            }
+        }
 
         stage('Checkout') {
             steps {
-                echo 'Checking out source code...'
+                sh '''
+                    rm -rf source
+
+                    git -c http.version=HTTP/1.1 clone \
+                        --branch main \
+                        https://github.com/ashu12355/Stream-API-In-Java-8.git \
+                        source
+                '''
             }
         }
 
         stage('Build & Test') {
             steps {
-                sh './mvnw clean package'
+                dir('source') {
+                    sh '''
+                        chmod +x mvnw
+                        ./mvnw clean package
+                    '''
+                }
             }
         }
 
@@ -22,7 +56,7 @@ pipeline {
 
                     echo "Copying JAR..."
 
-                    cp target/*.jar ~/deploy/app.jar
+                    cp source/target/*.jar ~/deploy/app.jar
 
                     echo "Stopping old application..."
 
