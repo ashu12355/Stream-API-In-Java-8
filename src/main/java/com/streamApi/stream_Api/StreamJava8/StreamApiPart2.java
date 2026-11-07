@@ -77,15 +77,15 @@ public class StreamApiPart2 {
 
         Map<String, Double> avgSalryDeptWise = employees
                 .stream()
-                .collect(Collectors.groupingBy(employee -> employee.getDepartment(),
-                        Collectors.averagingDouble(employees -> employees.getSalary())));
+                .collect(Collectors.groupingBy(e -> e.getDepartment(),
+                        Collectors.averagingDouble(e -> e.getSalary())));
 
         System.out.println(avgSalryDeptWise);
     }
 
     // 6. Find the total salary department-wise.
 
-    public static void totalSalDeptWise() {
+    public static void totalSalaryDeptWise() {
 
         Map<String, Double> totalSalDeptWise =
                 employees.stream()
@@ -282,7 +282,7 @@ public class StreamApiPart2 {
 
     }
 
-//    21. Find the highest-paid employee in each department.
+//    21. Find the highest-paid employee in each department. [* * * * * ]
     //or
     //  24. Group employees by department and return the employee with the highest salary in
     //each department.
@@ -385,7 +385,7 @@ public class StreamApiPart2 {
                         .stream()
                         .filter(e -> !seen.add(e.getId()))
                         .distinct()
-                        .collect(Collectors.toUnmodifiableList());
+                        .toList();
 
         System.out.println(duplicateEmployee);
     }
@@ -645,7 +645,6 @@ public class StreamApiPart2 {
         String result = text.stream()
                 .max((a,b)->a.length() > b.length() ? 1:-1)
                 .orElse("");
-
         System.out.println(result);
 
     }
@@ -737,7 +736,7 @@ public class StreamApiPart2 {
 //        sumSal();
 //        maxSalary();
 //        highestPaidEmp();
-//        empNameByDept();
+        empNameByDept();
 //        deptWithHighestAvgSalary();
 //        deptNameWithHighestAvgSalary();
 //        deptWithHighTotalSal();
@@ -770,7 +769,7 @@ public class StreamApiPart2 {
 //        sortString();
 //        duplicateCharacter();
 //        sortWords();
-        flattenNestedList();
+//        flattenNestedList();
 
     }
 }

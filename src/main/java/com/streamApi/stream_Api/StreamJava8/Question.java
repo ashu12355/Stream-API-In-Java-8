@@ -2,6 +2,7 @@ package com.streamApi.stream_Api.StreamJava8;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Question {
@@ -98,12 +99,9 @@ public class Question {
         List<Integer> flatList = listOfList
                 .stream()
                 .flatMap(a -> a.stream())
-//                .sorted()
+                .sorted()
                 .collect(Collectors.toList());
-
         System.out.println(flatList);
-
-
     }
 
     public static void partitionOddEven() {
@@ -232,12 +230,14 @@ Q. How to create a frequency map from a list of strings using Java Streams?
     }
 
     public static void findTheSecondHighestElement() {
-        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10);
+        List<Integer> list = Arrays.asList(-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -10,-98,-65,-99);
 
         Optional<Integer> result = list
                 .stream()
                 .distinct()
-                .sorted((a, b) -> b.compareTo(a))
+//                .sorted((a, b) -> b.compareTo(a))
+//                .sorted((a,b)-> Integer.compare(b,a))
+                .sorted((a, b) -> b > a ? 1 : (b < a ? -1 : 0))
                 .skip(1)
                 .findFirst();
         result.ifPresent(System.out::println);
@@ -260,7 +260,7 @@ Q. How to create a frequency map from a list of strings using Java Streams?
         Map<Boolean, List<Integer>> rs = list
                 .stream()
                 .collect(Collectors.partitioningBy(a -> a > 0));
-        System.out.println(rs);
+        System.out.println(rs.get(true));
     }
 
     public static void isNegativeList() {
@@ -275,7 +275,9 @@ Q. How to create a frequency map from a list of strings using Java Streams?
     public static void skipFirstThree() {
         List<Integer> list = Arrays.asList(1, 2, 3, -4, -5, -6, 7, 8, 9, 10, 10);
 
-        List<Integer> result = list.stream().skip(3).collect(Collectors.toList());
+        List<Integer> result = list.stream()
+                .skip(3)
+                .collect(Collectors.toList());
 
         System.out.println(result);
     }
@@ -293,7 +295,8 @@ Q. How to create a frequency map from a list of strings using Java Streams?
         List<Integer> list = Arrays.asList(1, 2, 3, -4, -5, -6, 7, 8, 9, 10, 10);
 
         Integer result = list.stream()
-                .min((a, b) -> a.compareTo(b)).get();
+                .min((a, b) -> a.compareTo(b))
+                .get();
         System.out.println(result);
     }
 
@@ -322,7 +325,9 @@ Q. How to create a frequency map from a list of strings using Java Streams?
     public static void convertListOfStringToSingleConcatenatedString() {
         List<String> list = Arrays.asList("Ashutosh", "Sharma");
 
-        String result = list.stream().collect(Collectors.joining(" "));
+        String result = list
+                .stream()
+                .collect(Collectors.joining(" "));
 
         System.out.println(result);
     }
@@ -336,6 +341,16 @@ Q. How to create a frequency map from a list of strings using Java Streams?
                 .collect(Collectors.toList());
 
         System.out.println(result);
+
+        System.out.println("\n*************\n");
+
+        Map<Integer,List<String>> result2 = list.stream()
+                        .collect(Collectors.groupingBy(
+                                s -> s.length()
+                        ));
+        result2.forEach((len,elem)->{
+            System.out.println(elem);
+        });
     }
 
     public static void productOfAllNumbers() {
@@ -366,7 +381,11 @@ Q. How to create a frequency map from a list of strings using Java Streams?
     public static void secondSmallest() {
         List<Integer> list = Arrays.asList(2, 8, 7, 5, 4, 3, 9, 32, 34, 23, 1);
 
-        Optional<Integer> result = list.stream().sorted().skip(1).findFirst();
+        Optional<Integer> result = list
+                .stream()
+                .sorted()
+                .skip(1)
+                .findFirst();
         result.ifPresent(System.out::println);
     }
 
@@ -374,8 +393,11 @@ Q. How to create a frequency map from a list of strings using Java Streams?
         List<String> list = Arrays.asList("Bob", "Civic", "Dad", "Doctor", "Detartrated", "Eve", "Kalyan", "Level");
 
         List<String> result = list.stream()
-                .filter(words -> new StringBuilder(words).reverse().toString()
-                        .equalsIgnoreCase(words)).collect(Collectors.toList());
+                .filter(words -> new StringBuilder(words)
+                        .reverse()
+                        .toString()
+                        .equalsIgnoreCase(words))
+                .collect(Collectors.toList());
         System.out.println(result);
     }
 
@@ -393,10 +415,12 @@ Q. How to create a frequency map from a list of strings using Java Streams?
         List<Integer> list = Arrays.asList(12,4,5,4,6,3);
 
         List<Integer> result = list.stream()
-                .sorted().collect(Collectors.toList());
+                .sorted()
+                .collect(Collectors.toList());
+
         int size = list.size();
         double median = size % 2 == 0 ?
-                (result.get(size/2-1)+result.get(size/2))/2.0 : result.get(size/2);
+                (result.get(size/2-1) + result.get(size/2))/2.0 : result.get(size/2);
             System.out.println(median);
         }
 
@@ -433,17 +457,26 @@ Q. How to create a frequency map from a list of strings using Java Streams?
                         return list;
                     }));
             System.out.println(result);
+
+            //one more to do this
+
+            List<String> reversedList = IntStream.range(0,listt.size())
+                    .mapToObj(i -> listt.get(listt.size()-1-i))
+                    .collect(Collectors.toList());
+
+            System.out.println(reversedList);
         }
 
         public static void countCharacterInAList() {
             List<String> list = Arrays.asList("Bob", "Civic", "Dad", "Doctor", "Detartrated", "Eve", "Kalyan", "Level");
 
             Integer count = list.stream()
-                    .mapToInt(s -> s.length()).sum();
+                    .mapToInt(s -> s.length())
+                    .sum();
             System.out.println(count);
         }
 
-        public static void firstNonRepeatingCharcter() {
+        public static void firstNonRepeatingCharacter() {
             String inputVal = "aaabbcccdee";
 
             Map<Character,Integer> characterCount = new LinkedHashMap<>();
@@ -457,12 +490,6 @@ Q. How to create a frequency map from a list of strings using Java Streams?
                     .findFirst()
                     .ifPresent(System.out::println);
         }
-
-
-
-
-
-
 
     public static void main(String[] args) {
 
@@ -484,7 +511,7 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 //        findElementsGreaterThan10();
 //        findLongestString();
 //        findLongestStringAndLength();
-        findTheSecondHighestElement();
+//        findTheSecondHighestElement();
 //        collectOddNumber();
 //        PositiveList();
 //        isNegativeList();
@@ -495,19 +522,18 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 //        stringContainingSpecificCharacter();
 //        convertListOfStringToSingleConcatenatedString();
 //        sortListOfStringByLength();
-//        sortListOfStringByLength();
 //        productOfAllNumbers();
 //        additionOfAllNumbers();
 //        removeElementLessThan5();
 //        secondSmallest();
-//        pallindromicList();
+//        palindromicList();
 //        convertListToSet();
 //        findMedian();
 //        generateFibonacciSeries();
 //        palindromicListCount();
-//        reverseList();
+        reverseList();
 //        countCharacterInAList();
-//        firstNonRepeatingCharcter();
+//        firstNonRepeatingCharacter();
 
     }
 }
