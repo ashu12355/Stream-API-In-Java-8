@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Question {
+public class StreamApiPart1 {
 
     public static void FilterEvenNumbers() {
 
@@ -484,7 +484,9 @@ Q. How to create a frequency map from a list of strings using Java Streams?
             for(char c : inputVal.toCharArray()){
                 characterCount.put(c,characterCount.getOrDefault(c,0)+1);
             }
-            characterCount.entrySet().stream()
+            characterCount
+                    .entrySet()
+                    .stream()
                     .filter(entry -> entry.getValue() == 1)
                     .map(Map.Entry::getKey)
                     .findFirst()
@@ -531,7 +533,7 @@ Q. How to create a frequency map from a list of strings using Java Streams?
 //        findMedian();
 //        generateFibonacciSeries();
 //        palindromicListCount();
-        reverseList();
+//        reverseList();
 //        countCharacterInAList();
 //        firstNonRepeatingCharacter();
 
